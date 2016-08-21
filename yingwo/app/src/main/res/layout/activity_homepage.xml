@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        app:navigationIcon="@mipmap/screen"
+        android:navigationIcon="@mipmap/screen"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:layout_scrollFlags="scroll|enterAlways" >
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:text="南京工业大学"
+            android:fontFamily="sans-serif"
+            android:textSize="18sp"/>
+    </android.support.v7.widget.Toolbar>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_page"
+            android:background="@color/background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginEnd="16dp"></ListView>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_selector"
+        android:layout_below="@id/toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/roundshape"
+        android:visibility="invisible"
+        >
+        <TextView
+            android:id="@+id/tv_all"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/tv_state_color"
+            android:textSize="12sp"
+            android:text="全部"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/tv_new"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/tv_state_color"
+            android:textSize="12sp"
+            android:text="新鲜事"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/tv_attention"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/tv_state_color"
+            android:textSize="12sp"
+            android:text="关注的话题"
+            android:layout_centerHorizontal="true" />
+        <TextView
+            android:id="@+id/tv_friendthing"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/tv_attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/tv_state_color"
+            android:textSize="12sp"
+            android:text="好友动态"
+            android:layout_marginBottom="10dp"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="7.5dp">
+        <include android:id="@+id/tabview" layout="@layout/tabview"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"></include>
+    </RelativeLayout>
+
+
+</RelativeLayout>
