@@ -35,12 +35,12 @@ public class PersonCenterFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        init(view);
+        init();
     }
 
 
-    public void init(View view){
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+    public void init(){
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("");
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
     }

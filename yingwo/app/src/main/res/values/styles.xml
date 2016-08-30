@@ -38,5 +38,11 @@
         <item name="android:windowExitAnimation">@anim/pophiden_anim</item>
         <!-- 指定消失的动画xml -->
     </style>
+    <style name="homepopwindow_anim_style">
+        <item name="android:windowEnterAnimation">@anim/homeshow_anim</item>
+        <!-- 指定显示的动画xml -->
 
+        <item name="android:windowExitAnimation">@anim/homehiden_anim</item>
+        <!-- 指定消失的动画xml -->
+    </style>
 </resources>

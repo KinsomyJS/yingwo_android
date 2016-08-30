@@ -3,15 +3,18 @@ package com.yingwo.yingwo;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -20,6 +23,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.yingwo.yingwo.PopUpWindow.Command_PopUp;
+import com.yingwo.yingwo.PopUpWindow.Home_PopUp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,30 +36,10 @@ import butterknife.OnClick;
  */
 
 public class HomeFragment extends Fragment {
-
-
-    @BindView(R.id.layout_selector)
-    RelativeLayout layout_selector;
-    @BindView(R.id.tv_all)
-    TextView tv_all;
-    @BindView(R.id.tv_new)
-    TextView tv_new;
-    @BindView(R.id.tv_attention)
-    TextView tv_attention;
-    @BindView(R.id.tv_friendthing)
-    TextView tv_friendthing;
-    @BindView(R.id.action_home)
-    ImageView actionHome;
-    @BindView(R.id.action_find)
-    ImageView actionFind;
-    @BindView(R.id.action_add)
-    ImageView actionAdd;
-    @BindView(R.id.action_bub)
-    ImageView actionBub;
-    @BindView(R.id.action_head)
-    ImageView actionHead;
-
+    
     private Toolbar toolbar = null;
+    private Home_PopUp home_popUp;
+
 
     @Nullable
     @Override
@@ -66,11 +52,11 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        init(view);
+        init();
     }
 
-    private void init(View view) {
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+    private void init() {
+        toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         toolbar.setTitle("");
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -81,55 +67,35 @@ public class HomeFragment extends Fragment {
                 animator.setDuration(2000);
                 animator.setInterpolator(new AccelerateInterpolator());
                 animator.start();
-                if (layout_selector.getVisibility() == View.INVISIBLE)
-                    showSelector();
-                else
-                    hideSelector();
+
+                home_popUp = new Home_PopUp(getActivity(), new MenuOnClickListener());
+                home_popUp.showAsDropDown(toolbar, 10, 15);
             }
         });
 
-
     }
 
+    public class MenuOnClickListener implements View.OnClickListener {
 
-    //显示左上角筛选器动画
-    private void showSelector() {
-        layout_selector.setVisibility(View.VISIBLE);
-        ObjectAnimator translationX = ObjectAnimator.ofFloat(layout_selector, "translationX", -300, 0);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(layout_selector, "alpha", 0, 1);
-        translationX.setInterpolator(new BounceInterpolator());
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(translationX, alpha);
-        animatorSet.setDuration(1500);
-        animatorSet.start();
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.tv_all:
+                    Toast.makeText(getActivity(), "toAll", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.tv_new:
+                    Toast.makeText(getActivity(), "toNew", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.tv_attention:
+                    Toast.makeText(getActivity(), "toAttention", Toast.LENGTH_SHORT).show();
+                    break;
+                case R.id.tv_friendthing:
+                    Toast.makeText(getActivity(), "toFriendThing", Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 
-    //隐藏左上角筛选器
-    private void hideSelector() {
-        layout_selector.setVisibility(View.INVISIBLE);
-    }
-
-
-    @OnClick(R.id.tv_all)
-    public void toAll() {
-        Toast.makeText(getActivity(), "ToAll", Toast.LENGTH_SHORT).show();
-    }
-
-    @OnClick(R.id.tv_new)
-    public void toNew() {
-        Toast.makeText(getActivity(), "toNew", Toast.LENGTH_LONG).show();
-
-    }
-
-    @OnClick(R.id.tv_attention)
-    public void toAttention() {
-        Toast.makeText(getActivity(), "toAttention", Toast.LENGTH_LONG).show();
-    }
-
-    @OnClick(R.id.tv_friendthing)
-    public void toFriendthing() {
-        Toast.makeText(getActivity(), "toFriendthing", Toast.LENGTH_LONG).show();
-    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
