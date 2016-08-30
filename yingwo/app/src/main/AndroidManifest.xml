@@ -28,7 +28,8 @@
         <activity android:name=".ResetPasswdActivity2" android:theme="@style/AppTheme.NoActionbar"></activity>
         <activity android:name=".MakeupinfoActivity" android:theme="@style/AppTheme.NoActionbar"></activity>
         <activity android:name=".SettingsActivity" android:theme="@style/AppTheme.NoActionbar"></activity>
-        <activity android:name=".HomePageActivity" android:theme="@style/AppTheme.NoActionbar"></activity>
+        <activity android:name=".PersonCenterActivity" android:theme="@style/Theme"></activity>
+        <activity android:name=".HomePageActivity" android:theme="@style/Theme"></activity>
         <activity android:name=".RefreshThingActivity" android:windowSoftInputMode="adjustResize" android:theme="@style/AppTheme.NoActionbar"></activity>
         <activity android:name=".PostActivity" android:windowSoftInputMode="adjustResize" android:theme="@style/AppTheme.NoActionbar"></activity>
         <activity android:name=".FirstActivity" android:theme="@style/AppTheme.NoActionbar"></activity>
