@@ -300,7 +300,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="bottom|center_horizontal"
-            android:layout_marginBottom="7.5dp"></LinearLayout>
+            android:layout_marginBottom="7.5dp">
+            <include android:id="@+id/tabview" layout="@layout/tabview"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"></include>
+    </LinearLayout>
 
 
 </LinearLayout>
