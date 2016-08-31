@@ -1,7 +1,6 @@
 package com.yingwo.yingwo;
 
 import android.app.Activity;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yingwo.yingwo.PopUpWindow.Command_PopUp;
+import com.yingwo.yingwo.model.PostItemModel;
+import com.yingwo.yingwo.model.PostTopModel;
 
 import java.util.List;
 
@@ -21,23 +22,40 @@ import java.util.List;
 
 public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapter.MyViewHolder> {
     private Activity context;
-    private List<String> data;
+    private List<String> postData;
+    private PostTopModel postTop;
     private Command_PopUp command_popUp;
+    private int POST_TOP = -1;
+    private int POST_ITEM = 1;
 
-    public PostRecyclerAdapter(Activity context, List<String> data) {
+    public PostRecyclerAdapter(Activity context, List<String> postData) {
         this.context = context;
-        this.data = data;
+        this.postData = postData;
+//        this.postTop = postTop;
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyViewHolder holder = new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.list_post_item, parent, false));
+        MyViewHolder holder;
+        if (viewType == POST_TOP) {
+            holder = new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.list_post_top_item, parent, false));
+        } else {
+            holder = new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.list_post_item, parent, false));
+
+        }
         return holder;
     }
 
     @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return POST_TOP;
+        }
+        return POST_ITEM;
+    }
+
+    @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tvContent.setText(data.get(position));
         holder.tvLouCeng.setText("第" + (position + 1) + "楼");
         holder.ibMore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +68,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return postData.size() + 1;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
