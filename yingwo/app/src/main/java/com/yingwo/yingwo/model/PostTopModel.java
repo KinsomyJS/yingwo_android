@@ -6,15 +6,6 @@ package com.yingwo.yingwo.model;
 
 public class PostTopModel {
     private String topic;
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
     private String userHead;
     private String userId;
     private String realseTime;
@@ -24,6 +15,14 @@ public class PostTopModel {
 
     public PostTopModel(){
 
+    }
+
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     public String getUserHead() {

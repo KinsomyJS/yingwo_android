@@ -1,7 +1,12 @@
 package com.yingwo.yingwo;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,7 +26,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
-import com.yingwo.yingwo.Adapter.ChoosePhotoListAdapter;
+import com.yingwo.yingwo.Adapter.PhotoEditListAdapter;
 import com.yingwo.yingwo.Listener.SoftKeyBoardListener;
 import com.yingwo.yingwo.model.TokenEvent;
 import com.yingwo.yingwo.utils.HttpUtil;
@@ -53,10 +58,16 @@ public class RefreshThingActivity extends AppCompatActivity{
     private final int REQUEST_CODE_GALLERY = 1001;
     private final int REQUEST_CODE_CROP = 1002;
     private final int REQUEST_CODE_EDIT = 1003;
+    private final int MAX = 15;
 
     private List<PhotoInfo> mPhotoList;
 
-    private ChoosePhotoListAdapter mChoosePhotoListAdapter;
+    //    private ChoosePhotoListAdapter mChoosePhotoListAdapter;
+    private com.yingwo.yingwo.Adapter.PhotoEditListAdapter photoEditListAdapter;
+    private String urls;
+
+    //上传进度等待
+    private ProgressDialog ringProgressDialog;
 
     @BindView(R.id.btn_choosepic)
     ImageView btn_choosepic;
@@ -83,7 +94,8 @@ public class RefreshThingActivity extends AppCompatActivity{
 
     @OnClick(R.id.btn_choosepic)
     public void choosepic(){
-        GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY,8, mOnHanlderResultCallback);
+
+        GalleryFinal.openGalleryMuti(REQUEST_CODE_GALLERY,15, mOnHanlderResultCallback);
     }
     private void init(){
         ButterKnife.bind(this);
@@ -100,8 +112,27 @@ public class RefreshThingActivity extends AppCompatActivity{
         });
         block_keyboardview = (LinearLayout) findViewById(R.id.block_keyboardview);
         mPhotoList = new ArrayList<>();
-        mChoosePhotoListAdapter = new ChoosePhotoListAdapter(this, mPhotoList);
-        mLvPhoto.setAdapter(mChoosePhotoListAdapter);
+//        mChoosePhotoListAdapter = new ChoosePhotoListAdapter(this, mPhotoList);
+        photoEditListAdapter = new PhotoEditListAdapter(this, mPhotoList);
+        mLvPhoto.setAdapter(photoEditListAdapter);
+        /*mLvPhoto.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                new AlertDialog.Builder(RefreshThingActivity.this).setTitle("删除提示")
+                        .setMessage("删除图片")
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mPhotoList.remove(position);
+                                mChoosePhotoListAdapter.notifyDataSetChanged();
+                            }
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                }).show();
+            }
+        });*/
         //注册软键盘的监听
         SoftKeyBoardListener.setListener(this,
                 new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
@@ -141,7 +172,12 @@ public class RefreshThingActivity extends AppCompatActivity{
         public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
             if (resultList != null) {
                 mPhotoList.addAll(resultList);
-                mChoosePhotoListAdapter.notifyDataSetChanged();
+                Log.i("resultonHanlderSuccess", " " +mPhotoList.size());
+                if(mPhotoList.size() > MAX){
+                    for(int i = 0;i<=(mPhotoList.size() - MAX);i++)
+                        mPhotoList.remove(0);
+                }
+                photoEditListAdapter.notifyDataSetChanged();
                 Log.i("resultonHanlderSuccess",mPhotoList.size() + "");
             }
         }
@@ -168,60 +204,117 @@ public class RefreshThingActivity extends AppCompatActivity{
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_release) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        String jsonstr = HttpUtil.getToken("http://yw.zhibaizhi.com/yingwophp/qiniu/getAT");
-                        JSONObject jsonObject = new JSONObject(jsonstr);
-                        String token  = (String) jsonObject.get("info");
-                        Log.i("json",token);
-                        Log.i("resultjson",mPhotoList.size() + "" + mPhotoList.get(0).getPhotoPath());
-                        // 重用uploadManager。一般地，只需要创建一个uploadManager对象
-                        UploadManager uploadManager = new UploadManager();
-                        String data = mPhotoList.get(0).getPhotoPath();
-                        String key = null;
-                        uploadManager.put(data, key, token,
-                                new UpCompletionHandler() {
+            urls = "";
+            ringProgressDialog = ProgressDialog.show(RefreshThingActivity.this, "连接中...", "正在发布", true);
+            ringProgressDialog.setCancelable(false);
+            if(!edit_content.getText().toString().isEmpty()){
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String content = "";
+                        if (!edit_content.getText().toString().isEmpty()) {
+                            content = edit_content.getText().toString();
+                            try {
+                                //获取上传凭证token
+                                String token = HttpUtil.getToken("http://yw.zhibaizhi.com/yingwophp/qiniu/getAT");
+//                                JSONObject jsonObject = new JSONObject(jsonstr);
+//                                String token = (String) jsonObject.get("info");
+                                Log.i("json", token);
+                                Log.i("resultjson", mPhotoList.size() + "");
+                                // 重用uploadManager。一般地，只需要创建一个uploadManager对象
+                                UploadManager uploadManager = new UploadManager();
+                                for (int i = 0; i < mPhotoList.size(); i++) {
+                                    String data = mPhotoList.get(i).getPhotoPath();//
+                                    String key = null;//
+                                    //data:照片的本地路径
+                                    //key:null
+                                    //token
+                                    uploadManager.put(data, key, token,
+                                            new UpCompletionHandler() {
+                                                @Override
+                                                public void complete(String key, ResponseInfo info, JSONObject res) {
+                                                    //res包含hash、key等信息，具体字段取决于上传策略的设置。
+                                                    try {
+                                                        Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res.get("key"));
+                                                        Log.i("qiniu", "\r\n " + info.isOK()  + (mPhotoList.size()-1));
+                                                        Message message = Message.obtain();
+                                                        message.what = 1;
+                                                        //上传后返回url
+                                                        message.obj = "http://obabu2buy.bkt.clouddn.com/" + res.get("key") + ",";
+                                                        handler.sendMessage(message);
+                                                        /*urls += "http://obabu2buy.bkt.clouddn.com/" + res.get("key") + ",";
+                                                        if(finalI == mPhotoList.size()-1){
+                                                            HttpUtil.releasePost(0, finalContent, urls);
+                                                        }*/
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    } /*catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }*/
+                                                }
+                                            }, null);
+                                }
+
+                                runOnUiThread(new Runnable() {
                                     @Override
-                                    public void complete(String key, ResponseInfo info, JSONObject res) {
-                                        //res包含hash、key等信息，具体字段取决于上传策略的设置。
-                                        Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-                                        Log.i("qiniu", "\r\n " + info.isOK() );
+                                    public void run() {
+                                        ringProgressDialog.dismiss();
+                                        Toast.makeText(getApplicationContext(),"上传成功",Toast.LENGTH_SHORT).show();
+                                        finish();
                                     }
-                                }, null);
+                                });
 //                        EventBus.getDefault().post(new TokenEvent(jsonstr));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ringProgressDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "请添加发布内容", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
                     }
-                }
-            }).start();
+                }).start();
+            }
 
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    Handler handler = new Handler(){
+        int i = 0;
+        String urls = "";
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1){
+                i++;
+                urls += msg.obj.toString();
+            }
+
+            if(i == (mPhotoList.size())){
+                try {
+                    urls = urls.substring(0,urls.length()-1);
+                    String content = edit_content.getText().toString();
+                    HttpUtil.releasePost(0, content, urls);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    };
+
+
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void TokenEventBus(TokenEvent event){
-        Log.i("result",event.getMsg());
-        Log.i("result",mPhotoList.size() + "");
-        // 重用uploadManager。一般地，只需要创建一个uploadManager对象
-        UploadManager uploadManager = new UploadManager();
-        String data = "kinsomy's test";
-        String key = null;
-        String token = event.getMsg();
-        uploadManager.put(data, key, token,
-                new UpCompletionHandler() {
-                    @Override
-                    public void complete(String key, ResponseInfo info, JSONObject res) {
-                        //res包含hash、key等信息，具体字段取决于上传策略的设置。
-                        Log.i("qiniu", key + ",\r\n " + info + ",\r\n " + res);
-                        Log.i("qiniu", "\r\n " + info.isOK() );
-                    }
-                }, null);
+
     }
 
     @Override
@@ -245,6 +338,21 @@ public class RefreshThingActivity extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
 
+    public void deleteIndex(final int position, PhotoInfo photoInfo) {
+        new AlertDialog.Builder(RefreshThingActivity.this).setTitle("删除提示")
+                .setMessage("删除图片")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mPhotoList.remove(position);
+                        photoEditListAdapter.notifyDataSetChanged();
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        }).show();
     }
 }

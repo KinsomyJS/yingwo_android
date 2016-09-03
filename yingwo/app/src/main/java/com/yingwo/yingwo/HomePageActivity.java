@@ -1,6 +1,5 @@
 package com.yingwo.yingwo;
 
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Intent;
@@ -12,10 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import com.yingwo.yingwo.PopUpWindow.Home_PopUp;

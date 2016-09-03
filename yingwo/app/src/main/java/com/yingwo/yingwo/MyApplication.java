@@ -1,6 +1,7 @@
 package com.yingwo.yingwo;
 
 import android.app.Application;
+import android.content.Context;
 import android.graphics.Color;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -23,10 +24,12 @@ public class MyApplication extends Application{
     FunctionConfig functionConfig;
     CoreConfig coreConfig;
     ThemeConfig theme;
+    static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = getApplicationContext();
         Fresco.initialize(getApplicationContext());
         //设置主题
         theme = new ThemeConfig.Builder()
@@ -62,6 +65,9 @@ public class MyApplication extends Application{
                 .build();
 // 重用uploadManager。一般地，只需要创建一个uploadManager对象
         UploadManager uploadManager = new UploadManager(config);
+    }
 
+    public  static Context getGlobalContext(){
+        return context;
     }
 }
