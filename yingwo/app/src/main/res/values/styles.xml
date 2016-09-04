@@ -71,5 +71,4 @@
         <item name="android:background">@drawable/button_greencorner_selector</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
-
 </resources>

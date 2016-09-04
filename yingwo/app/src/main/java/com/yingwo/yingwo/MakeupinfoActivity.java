@@ -30,7 +30,7 @@ import android.widget.Toast;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
-import com.yingwo.yingwo.PopUpWindow.Grade_PopUp;
+import com.yingwo.yingwo.View.Grade_PopUp;
 import com.yingwo.yingwo.clip.ClipHeaderActivity;
 import com.yingwo.yingwo.model.RegisterEntity;
 import com.yingwo.yingwo.model.UserInfoEntity;
@@ -410,6 +410,7 @@ public class MakeupinfoActivity extends AppCompatActivity {
                         public void onCompleted() {
                             Toast.makeText(MakeupinfoActivity.this, "信息更新成功", Toast.LENGTH_SHORT).show();
                             updateBaseInfoProgress.setVisibility(View.GONE);
+                            startActivity(new Intent(MakeupinfoActivity.this,HomePageActivity.class));
                         }
 
                         @Override

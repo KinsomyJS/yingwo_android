@@ -1,29 +1,23 @@
-package com.yingwo.yingwo;
+package com.yingwo.yingwo.Adapter;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.yingwo.yingwo.PopUpWindow.Command_PopUp;
+import com.yingwo.yingwo.R;
 import com.yingwo.yingwo.model.PostListEntity.InfoBean;
-import com.yingwo.yingwo.model.PostListEntity;
-import com.yingwo.yingwo.model.PostTopModel;
+import com.yingwo.yingwo.model.TopicModel;
 import com.yingwo.yingwo.utils.ListViewUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -35,18 +29,18 @@ import java.util.List;
 public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapter.MyViewHolder> {
     private Activity context;
     private List<InfoBean> postData;
-    private PostTopModel postTop;
+    private TopicModel.InfoBean topBean;
     private Command_PopUp command_popUp;
     private PostImageItemAdapter postImageItemAdapter;
     private int POST_TOP = -1;
     private int POST_ITEM = 1;
 
-    public PostRecyclerAdapter(Activity context, List<InfoBean> postData) {
+    public PostRecyclerAdapter(Activity context, List<InfoBean> postData, TopicModel.InfoBean topBean) {
         this.context = context;
         if (postData != null)
             Collections.reverse(postData);
         this.postData = postData;
-//        this.postTop = postTop;
+        this.topBean = topBean;
     }
 
     public void setDatas(List<InfoBean> datas) {
@@ -58,31 +52,27 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MyViewHolder holder;
-//        if (viewType == POST_TOP) {
-//            holder = new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.list_post_top_item, parent, false));
-//        } else {
-        holder = new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.list_post_item, parent, false));
+        if (viewType == POST_TOP) {
+            holder = new TopViewHolder(LayoutInflater.from(context).inflate(R.layout.list_post_top_item, parent, false));
 
-//        }
+        } else {
+            holder = new ItemViewHolder(LayoutInflater.from(context).inflate(R.layout.list_post_item, parent, false));
+        }
+
         return holder;
     }
 
-//    @Override
-//    public int getItemViewType(int position) {
-//        if (position == 0) {
-//            return POST_TOP;
-//        }
-//        return POST_ITEM;
-//    }
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0) {
+            return POST_TOP;
+        }
+        return POST_ITEM;
+    }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
-        final InfoBean infoBean = postData.get(position);
-        if (infoBean.getUser_face_img() != null)
-//            Toast.makeText(context, "Uri.parse(face_img):" + Uri.parse(face_img), Toast.LENGTH_SHORT).show();
-            holder.header.setImageURI(Uri.parse((String) infoBean.getUser_face_img()));
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tvLouCeng.setText("第" + (position + 1) + "楼");
-        holder.tvContent.setText(infoBean.getContent());
         holder.ibMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,13 +80,29 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
                 command_popUp.showAtLocation(context.findViewById(R.id.post_main), Gravity.BOTTOM, 0, 0);
             }
         });
-        setImage(holder.listView, infoBean.getImg());
-        holder.userName.setText((String) infoBean.getUser_name());
+        if (position == 0) {
+            if(topBean.getContent().isEmpty()){
+                holder.tvContent.setVisibility(View.GONE);
+            }else
+                holder.tvContent.setText(topBean.getContent());
+            if (topBean.getUser_face_img() != null)
+                setImage(holder.listView, topBean.getImg());
+            holder.userName.setText(topBean.getUser_name());
+        } else {
+            final InfoBean infoBean = postData.get(position-1);
+            if (infoBean.getUser_face_img() != null)
+                setImage(holder.listView, infoBean.getImg());
+            if(infoBean.getContent().isEmpty()){
+                holder.tvContent.setVisibility(View.GONE);
+            }else
+                holder.tvContent.setText(infoBean.getContent());
+            holder.userName.setText((String) infoBean.getUser_name());
+        }
     }
 
     @Override
     public int getItemCount() {
-        return postData.size();
+        return postData.size()+1;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -118,6 +124,18 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
         }
     }
 
+    public class ItemViewHolder extends MyViewHolder {
+        public ItemViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    public class TopViewHolder extends MyViewHolder {
+        public TopViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
     public View.OnClickListener Pop_onClick = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -136,11 +154,15 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<PostRecyclerAdapte
     };
 
     public void setImage(ListView listView, String imageUrl) {
-        if (!imageUrl.contains("obabu2buy.bkt.clouddn.com")) {
+        if (!imageUrl.contains("http")) {
             listView.setVisibility(View.GONE);
             return;
         }
+
         String[] urls = imageUrl.split(",");
+        for (int i = 0; i < urls.length; i++) {
+            urls[i] += "?imageMogr2/thumbnail/!75p";
+        }
         List<String> data = Arrays.asList(urls);
         postImageItemAdapter = new PostImageItemAdapter(context, data);
         listView.setAdapter(postImageItemAdapter);

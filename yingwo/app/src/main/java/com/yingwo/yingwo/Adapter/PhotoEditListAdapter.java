@@ -22,8 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.yingwo.yingwo.RefreshThingActivity;
-
 import java.util.List;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -34,8 +32,6 @@ import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
 
 /**
  * Desction:
- * Author:pengjianbo
- * Date:15/11/30 下午2:26
  */
 public class PhotoEditListAdapter extends ViewHolderAdapter<PhotoEditListAdapter.ViewHolder, PhotoInfo> {
 

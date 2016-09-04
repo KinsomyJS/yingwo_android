@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -30,14 +29,10 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.yingwo.yingwo.Adapter.PhotoEditListAdapter;
 import com.yingwo.yingwo.Listener.SoftKeyBoardListener;
-import com.yingwo.yingwo.model.TokenEvent;
 import com.yingwo.yingwo.utils.HttpControl;
 import com.yingwo.yingwo.utils.HttpUtil;
 import com.yingwo.yingwo.utils.UserinfoService;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -191,7 +186,7 @@ public class PostBuildingActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_release) {
-            urls = "";
+//            urls = "";
             ringProgressDialog = ProgressDialog.show(PostBuildingActivity.this, "连接中...", "正在发布", true);
             ringProgressDialog.setCancelable(false);
             if (mPhotoList.size() < 1) {
@@ -201,6 +196,7 @@ public class PostBuildingActivity extends AppCompatActivity {
                     Toast.makeText(this, "请添加回复内容", Toast.LENGTH_SHORT).show();
                 } else {
                     post_Building(post_id, urls, content);
+
                 }
             } else {
                 updateImg();
@@ -321,12 +317,14 @@ public class PostBuildingActivity extends AppCompatActivity {
                     public void onCompleted() {
                         Log.d("PostBuildingActivity", "Completed");
                         Toast.makeText(PostBuildingActivity.this, "发布成功", Toast.LENGTH_SHORT).show();
+                        ringProgressDialog.dismiss();
                         finish();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d("PostBuildingActivity", "Error");
+                        ringProgressDialog.dismiss();
                     }
 
                     @Override

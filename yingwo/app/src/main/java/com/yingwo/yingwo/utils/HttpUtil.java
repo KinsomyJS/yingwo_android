@@ -97,15 +97,15 @@ public class HttpUtil {
                 .header("X-Requested-With","XMLHttpRequest")
                 .post(formBody)
                 .build();
-        Call call = client.newCall(request);
+        okhttp3.Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(okhttp3.Call call, IOException e) {
                 Log.i("register","false");
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 String str = response.body().string();
                 Log.i("register", str );
             }
@@ -124,15 +124,15 @@ public class HttpUtil {
                 .header("X-Requested-With","XMLHttpRequest")
                 .post(formBody)
                 .build();
-        Call call = client.newCall(request);
+        okhttp3.Call call = client.newCall(request);
         call.enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(okhttp3.Call call, IOException e) {
                 Log.i("register","false");
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 String str = response.body().string();
                 Log.i("register", str );
             }

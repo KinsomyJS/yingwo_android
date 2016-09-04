@@ -1,5 +1,4 @@
 package com.yingwo.yingwo;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,9 +17,6 @@ import com.yingwo.yingwo.utils.UserinfoService;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -29,7 +25,7 @@ import rx.schedulers.Schedulers;
  * Created by FJS0420 on 2016/7/13.
  */
 
-public class LoginActivity extends AppCompatActivity {
+    public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_register)
     TextView tv_register;
@@ -69,34 +65,33 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
     @OnClick(R.id.btn_login)
     public void login() {
         String phone = edit_phone.getText().toString();
         String passwd = edit_passwd.getText().toString();
         UserinfoService userinfoService = HttpControl.getInstance().getRetrofit().create(UserinfoService.class);
-        userinfoService.login(phone, passwd).subscribeOn(Schedulers.io())
+        userinfoService.login(phone, passwd)
+                .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<LoginEntity>() {
                     @Override
                     public void onCompleted() {
-                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(LoginActivity.this,HomePageActivity.class));
+                        Log.d("RegisterActivity2", "Completed");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                        Log.d("RegisterActivity2", "Error");
                     }
 
                     @Override
                     public void onNext(LoginEntity loginEntity) {
-                        int status = loginEntity.getStatus();
-                        if (status != 1){
-                            onError(new Exception());
-                        }else {
-                            onCompleted();
+                        if (loginEntity.getStatus() == 1) {
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
+                        } else {
+                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

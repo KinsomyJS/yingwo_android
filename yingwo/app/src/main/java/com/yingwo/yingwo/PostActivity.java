@@ -6,20 +6,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.yingwo.yingwo.Adapter.PostRecyclerAdapter;
+import com.yingwo.yingwo.View.AutoLoadRecyclerView;
 import com.yingwo.yingwo.model.PostListEntity;
+import com.yingwo.yingwo.model.TopicModel;
 import com.yingwo.yingwo.utils.HttpControl;
 import com.yingwo.yingwo.utils.UserinfoService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,7 +32,7 @@ import rx.schedulers.Schedulers;
  * Created by FJS0420 on 2016/8/5.
  */
 
-public class PostActivity extends AppCompatActivity{
+public class PostActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_title)
     TextView tv_title;
@@ -49,6 +48,9 @@ public class PostActivity extends AppCompatActivity{
     private AutoLoadRecyclerView mRecyclerVeiew;
     private PostRecyclerAdapter mAdapter;
     private boolean firstFlag;
+    private Intent topIntent;
+    private TopicModel.InfoBean topBean;
+
 
 
     @Override
@@ -60,7 +62,6 @@ public class PostActivity extends AppCompatActivity{
     }
 
     private void init() {
-        getPostList();
         swipePage.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -69,6 +70,11 @@ public class PostActivity extends AppCompatActivity{
         });
         // 这句话是为了，第一次进入页面的时候显示加载进度条
         firstFlag = true;
+        topIntent = getIntent();
+        Bundle topBundle = topIntent.getBundleExtra("topBundle");
+        topBean = (TopicModel.InfoBean) topBundle.getSerializable("top");
+        Toast.makeText(this,topBean.getImg(),Toast.LENGTH_SHORT).show();
+        getPostList();
 //        data.add("我们知道section指的是索引条上选中字母的索引，我们假设这个字母是N；那secion-1就代表的是section所对应的字母在索引条上的前一个字母，如果section对应的是N的话，那section-1所对应的就是字母M;\n" +
 //                "    这段话的思想其实就是，我们一般而言是要将二分查找的start位置定为0，但如果尽量往后的话那查找起来会更快些。所以，既然在map中没有section字符所对应item的索引，但如果能找到它前一个字母所对应索引的话，我们就不必从头开始找了，直接从它上一个字母所对应的");
 //        data.add("我们知道section指的是索引条上选中字母的索引，我们假设这个字母是N；那secion-1就代表的是section所对应的字母在索引条上的前一个字母，如果section对应的是N的话，那section-1所对应的就是字母M;\n" +
@@ -97,14 +103,20 @@ public class PostActivity extends AppCompatActivity{
 //                "    这段话的思想其实就是，我们一般而言是要将二分查找的start位置定为0，但如果尽量往后的话那查找起来会更快些。所以，既然在map中没有section字符所对应item的索引，但如果能找到它前一个字母所对应索引的话，我们就不必从头开始找了，直接从它上一个字母所对应的");
 //        mAdapter.notifyDataSetChanged();
         Intent intent = new Intent(this, PostBuildingActivity.class);
-        intent.putExtra("post_id", "1");
+        intent.putExtra("post_id",topBean.getId());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPostList();
     }
 
     public void getPostList() {
         Retrofit retrofit = HttpControl.getInstance().getRetrofit();
         UserinfoService userinfoService = retrofit.create(UserinfoService.class);
-        userinfoService.getPostList(1)
+        userinfoService.getPostList(Integer.parseInt(topBean.getId()))
                 .subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -125,11 +137,11 @@ public class PostActivity extends AppCompatActivity{
                         if (postListEntity.getStatus() != 1) {
                             onError(new Exception());
                         } else {
-                            if (firstFlag){
-                                mAdapter = new PostRecyclerAdapter(PostActivity.this, postListEntity.getInfo());
+                            if (firstFlag) {
+                                mAdapter = new PostRecyclerAdapter(PostActivity.this, postListEntity.getInfo(),topBean);
                                 mRecyclerVeiew.setAdapter(mAdapter);
                                 firstFlag = false;
-                            }else {
+                            } else {
                                 mAdapter.setDatas(postListEntity.getInfo());
                             }
                             onCompleted();
@@ -144,14 +156,8 @@ public class PostActivity extends AppCompatActivity{
         getPostList();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getPostList();
-    }
 
-
-    //    public View.OnClickListener Pop_onClick = new View.OnClickListener() {
+//    public View.OnClickListener Pop_onClick = new View.OnClickListener() {
 //        @Override
 //        public void onClick(View v) {
 //            switch (v.getId()) {

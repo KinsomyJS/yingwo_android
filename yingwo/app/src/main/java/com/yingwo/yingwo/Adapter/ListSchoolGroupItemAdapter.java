@@ -1,10 +1,5 @@
 package com.yingwo.yingwo.Adapter;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,15 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.TextView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.yingwo.yingwo.MakeupinfoActivity;
 import com.yingwo.yingwo.R;
 import com.yingwo.yingwo.model.SchoolListModel.InfoBean;
 import com.yingwo.yingwo.model.SchoolListModel.InfoBean.DataBean;
 import com.yingwo.yingwo.utils.ListViewUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListSchoolGroupItemAdapter extends BaseAdapter {
     private List<InfoBean> objects = new ArrayList<InfoBean>();
@@ -75,7 +72,7 @@ public class ListSchoolGroupItemAdapter extends BaseAdapter {
                 Intent intent = new Intent(context, MakeupinfoActivity.class);
                 intent.putExtra("school_id",school_id);
                 intent.putExtra("school_name",school_name);
-                if (context instanceof  AppCompatActivity) {
+                if (context instanceof AppCompatActivity) {
                     context.setResult(MakeupinfoActivity.SCHOOL_RES,intent);
                     context.finish();
                 }

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Environment;
 
 import com.facebook.cache.disk.DiskCacheConfig;
-import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.qiniu.android.common.Zone;
@@ -27,18 +26,27 @@ import cn.finalteam.galleryfinal.ThemeConfig;
  */
 
 public class MyApplication extends Application{
+    static Context context;
     FunctionConfig functionConfig;
     CoreConfig coreConfig;
     ThemeConfig theme;
-    DiskCacheConfig diskCacheConfig;
-    ImagePipelineConfig imagePipelineConfig;
-    static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
-        Fresco.initialize(getApplicationContext());
+//        ConfigConstants.init(getResources());// 初始化默认图片（占位图，错误图）
+//        Fresco.initialize(this, ConfigConstants.getImagePipelineConfig(this));// 图片缓存初始化配置
+
+        DiskCacheConfig diskCacheConfig = DiskCacheConfig.newBuilder(getApplicationContext())
+                .setBaseDirectoryPath(new File(Environment.getExternalStorageDirectory().getAbsoluteFile(),"yingwoxy"))
+                .setBaseDirectoryName("yingwo")
+                .setMaxCacheSize(200*1024*1024)//200MB
+                .build();
+        ImagePipelineConfig imagePipelineConfig = ImagePipelineConfig.newBuilder(this)
+                .setMainDiskCacheConfig(diskCacheConfig)
+                .build();
+        Fresco.initialize(this, imagePipelineConfig);
+        context =getApplicationContext();
         //设置主题
         theme = new ThemeConfig.Builder()
                 .setTitleBarBgColor(Color.rgb(29, 210, 166))
@@ -62,18 +70,6 @@ public class MyApplication extends Application{
                 .build();
         GalleryFinal.init(coreConfig);
 
-        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
-        //Fresco.initialize(this);
-        diskCacheConfig = DiskCacheConfig.newBuilder(context)
-                .setBaseDirectoryPath(new File(Environment.getExternalStorageDirectory().getAbsoluteFile(),"Green Studio"))
-                .setBaseDirectoryName("fresco_cookie")
-                .setMaxCacheSize(200*1024*1024)//200MB
-                .build();
-        imagePipelineConfig = ImagePipelineConfig.newBuilder(this)
-                .setMainDiskCacheConfig(diskCacheConfig)
-                .build();
-        Fresco.initialize(this, imagePipelineConfig);
-
         Configuration config = new Configuration.Builder()
                 .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K
                 .putThreshhold(512 * 1024)  // 启用分片上传阀值。默认512K
@@ -85,9 +81,10 @@ public class MyApplication extends Application{
                 .build();
 // 重用uploadManager。一般地，只需要创建一个uploadManager对象
         UploadManager uploadManager = new UploadManager(config);
+
     }
 
-    public  static Context getGlobalContext(){
+    public static  Context getGlobalContext(){
         return context;
     }
 }

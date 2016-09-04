@@ -124,7 +124,7 @@ public class ClipHeaderActivity extends Activity implements OnTouchListener {
             }
         });
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        toolbar.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

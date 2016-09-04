@@ -9,8 +9,11 @@ import android.widget.Toast;
 
 import com.yingwo.yingwo.Adapter.ListSchoolGroupItemAdapter;
 import com.yingwo.yingwo.model.SchoolListModel;
+import com.yingwo.yingwo.model.SchoolListModel.InfoBean;
 import com.yingwo.yingwo.utils.HttpControl;
 import com.yingwo.yingwo.utils.UserinfoService;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,10 +21,6 @@ import butterknife.OnClick;
 import retrofit2.Retrofit;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-
-import com.yingwo.yingwo.model.SchoolListModel.InfoBean;
-
-import java.util.List;
 
 import static rx.schedulers.Schedulers.io;
 

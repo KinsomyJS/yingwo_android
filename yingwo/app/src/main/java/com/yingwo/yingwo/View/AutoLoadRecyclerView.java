@@ -1,4 +1,4 @@
-package com.yingwo.yingwo;
+package com.yingwo.yingwo.View;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipeline;
+import com.yingwo.yingwo.loader.LoadFinishCallBack;
 
 /**
  * Created by FJS0420 on 2016/9/4.

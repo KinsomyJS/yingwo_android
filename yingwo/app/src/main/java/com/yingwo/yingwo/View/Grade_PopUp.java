@@ -1,4 +1,4 @@
-package com.yingwo.yingwo.PopUpWindow;
+package com.yingwo.yingwo.View;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -8,8 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import com.yingwo.yingwo.R;
 
@@ -27,7 +25,7 @@ public class Grade_PopUp extends PopupWindow {
         data = mcontext.getResources().getStringArray(R.array.grade);
         mMenuView = LayoutInflater.from(mcontext).inflate(R.layout.grade_popup, null);
         mListView = (ListView) mMenuView.findViewById(R.id.grade_list);
-        arrayAdapter = new ArrayAdapter<String>(mcontext,R.layout.list_grade_item,R.id.grade_item,data);
+        arrayAdapter = new ArrayAdapter<String>(mcontext, R.layout.list_grade_item, R.id.grade_item,data);
         mListView.setAdapter(arrayAdapter);
         mListView.setOnItemClickListener(itemClickListener);
         this.setOutsideTouchable(true);

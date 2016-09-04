@@ -1,4 +1,4 @@
-package com.yingwo.yingwo;
+package com.yingwo.yingwo.Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import android.widget.BaseAdapter;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.yingwo.yingwo.R;
 
 public class PostImageItemAdapter extends BaseAdapter {
 

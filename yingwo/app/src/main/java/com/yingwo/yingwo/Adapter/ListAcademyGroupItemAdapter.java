@@ -2,7 +2,6 @@ package com.yingwo.yingwo.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +29,7 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
     private AppCompatActivity context;
     private LayoutInflater layoutInflater;
 
-    public ListAcademyGroupItemAdapter(AppCompatActivity context, List<InfoBean> objects,String school_name,String school_id) {
+    public ListAcademyGroupItemAdapter(AppCompatActivity context, List<InfoBean> objects, String school_name, String school_id) {
         this.context = context;
         this.layoutInflater = LayoutInflater.from(context);
         this.objects = objects;
@@ -79,7 +78,7 @@ public class ListAcademyGroupItemAdapter extends BaseAdapter {
                 intent.putExtra("academy_name",academy_name);
                 intent.putExtra("school_name",school_name);
                 intent.putExtra("school_id",school_id);
-                if (context instanceof  AppCompatActivity) {
+                if (context instanceof AppCompatActivity) {
                     context.setResult(MakeupinfoActivity.ACADEMY_RES,intent);
                     context.finish();
                 }

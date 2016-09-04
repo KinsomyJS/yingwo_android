@@ -1,4 +1,4 @@
-package com.yingwo.yingwo;
+package com.yingwo.yingwo.loader;
 
 
 public interface LoadFinishCallBack {
