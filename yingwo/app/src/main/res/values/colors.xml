@@ -517,4 +517,5 @@
     <color name="list_divider">#fff</color>
     <color name="counter_text_bg">#626262</color>
     <color name="counter_text_color">#c5c4c4</color>
+    <color name="school_group_bg">#F3F3F3</color>
 </resources>

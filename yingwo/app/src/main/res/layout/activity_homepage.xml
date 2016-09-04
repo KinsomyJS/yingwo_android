@@ -28,6 +28,7 @@
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:layout_above="@+id/tabview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar">
@@ -38,14 +39,16 @@
             android:layout_height="match_parent"
             android:background="@color/background">
 
-            <ListView
+            <com.yingwo.yingwo.View.AutoLoadRecyclerView
+                android:id="@+id/recycleview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"></ListView>
+                android:layout_marginRight="16dp"
+                ></com.yingwo.yingwo.View.AutoLoadRecyclerView>
 
         </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -109,19 +112,62 @@
             android:textSize="12sp" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:id="@+id/tabview"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="7.5dp">
+        android:layout_marginTop="7.5dp"
+        android:layout_marginBottom="7.5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@mipmap/nanvbars"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <include
-            android:id="@+id/tabview"
-            layout="@layout/tabview"
+        <ImageView
+            android:id="@+id/action_home"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></include>
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@mipmap/home" />
+
+        <ImageView
+            android:id="@+id/action_find"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@mipmap/find" />
+
+        <ImageView
+            android:id="@+id/action_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:background="@mipmap/add" />
+
+        <ImageView
+            android:id="@+id/action_bub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:background="@mipmap/bub" />
+
+        <ImageView
+            android:id="@+id/action_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:background="@mipmap/head" />
+    </LinearLayout>
+    <!--<include-->
+        <!--android:id="@+id/tabview"-->
+        <!--layout="@layout/tabview"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginBottom="7.5dp"></include>-->
 
 
 </RelativeLayout>

@@ -65,4 +65,10 @@
         <item name="android:windowExitAnimation">@anim/homehiden_anim</item>
         <!-- 指定消失的动画xml -->
     </style>
+
+    <!-- 绿色按钮，带圆角 -->
+    <style name="GreenWithCorner" >
+        <item name="android:background">@drawable/button_greencorner_selector</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>
