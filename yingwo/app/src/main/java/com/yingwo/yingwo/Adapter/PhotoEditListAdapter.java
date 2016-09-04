@@ -17,6 +17,7 @@
 package com.yingwo.yingwo.Adapter;
 
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -38,10 +39,10 @@ import cn.finalteam.toolsfinal.adapter.ViewHolderAdapter;
  */
 public class PhotoEditListAdapter extends ViewHolderAdapter<PhotoEditListAdapter.ViewHolder, PhotoInfo> {
 
-    private RefreshThingActivity mActivity;
+    private AppCompatActivity mActivity;
     private int mRowWidth;
 
-    public PhotoEditListAdapter(RefreshThingActivity activity, List<PhotoInfo> list) {
+    public PhotoEditListAdapter(AppCompatActivity activity, List<PhotoInfo> list) {
         super(activity, list);
         mActivity = activity;
     }

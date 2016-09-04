@@ -32,6 +32,7 @@ import com.qiniu.android.storage.UpCompletionHandler;
 import com.qiniu.android.storage.UploadManager;
 import com.yingwo.yingwo.PopUpWindow.Grade_PopUp;
 import com.yingwo.yingwo.clip.ClipHeaderActivity;
+import com.yingwo.yingwo.model.RegisterEntity;
 import com.yingwo.yingwo.model.UserInfoEntity;
 import com.yingwo.yingwo.utils.HttpControl;
 import com.yingwo.yingwo.utils.HttpUtil;
@@ -404,9 +405,10 @@ public class MakeupinfoActivity extends AppCompatActivity {
                     .subscribeOn(Schedulers.io())
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<String>() {
+                    .subscribe(new Subscriber<RegisterEntity>() {
                         @Override
                         public void onCompleted() {
+                            Toast.makeText(MakeupinfoActivity.this, "信息更新成功", Toast.LENGTH_SHORT).show();
                             updateBaseInfoProgress.setVisibility(View.GONE);
                         }
 
@@ -417,8 +419,12 @@ public class MakeupinfoActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onNext(String s) {
-                            Toast.makeText(MakeupinfoActivity.this, s, Toast.LENGTH_SHORT).show();
+                        public void onNext(RegisterEntity registerEntity) {
+                            if (registerEntity.getStatus() != 1) {
+                                onError(new Exception());
+                            } else {
+                                onCompleted();
+                            }
                         }
                     });
         } else {

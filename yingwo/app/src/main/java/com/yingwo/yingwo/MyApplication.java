@@ -3,13 +3,19 @@ package com.yingwo.yingwo;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Environment;
 
+import com.facebook.cache.disk.DiskCacheConfig;
+import com.facebook.common.logging.FLog;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 import com.qiniu.android.common.Zone;
 import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
 import com.yingwo.yingwo.Listener.UILPauseOnScrollListener;
 import com.yingwo.yingwo.loader.UILImageLoader;
+
+import java.io.File;
 
 import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.FunctionConfig;
@@ -24,6 +30,8 @@ public class MyApplication extends Application{
     FunctionConfig functionConfig;
     CoreConfig coreConfig;
     ThemeConfig theme;
+    DiskCacheConfig diskCacheConfig;
+    ImagePipelineConfig imagePipelineConfig;
     static Context context;
 
     @Override
@@ -53,6 +61,18 @@ public class MyApplication extends Application{
                 .setPauseOnScrollListener(new UILPauseOnScrollListener(false, true))
                 .build();
         GalleryFinal.init(coreConfig);
+
+        FLog.setMinimumLoggingLevel(FLog.VERBOSE);
+        //Fresco.initialize(this);
+        diskCacheConfig = DiskCacheConfig.newBuilder(context)
+                .setBaseDirectoryPath(new File(Environment.getExternalStorageDirectory().getAbsoluteFile(),"Green Studio"))
+                .setBaseDirectoryName("fresco_cookie")
+                .setMaxCacheSize(200*1024*1024)//200MB
+                .build();
+        imagePipelineConfig = ImagePipelineConfig.newBuilder(this)
+                .setMainDiskCacheConfig(diskCacheConfig)
+                .build();
+        Fresco.initialize(this, imagePipelineConfig);
 
         Configuration config = new Configuration.Builder()
                 .chunkSize(256 * 1024)  //分片上传时，每片的大小。 默认256K

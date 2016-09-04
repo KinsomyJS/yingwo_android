@@ -55,6 +55,10 @@
             android:theme="@style/AppTheme.NoActionbar"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
+            android:name=".PostBuildingActivity"
+            android:theme="@style/AppTheme.NoActionbar"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
             android:name=".PostActivity"
             android:theme="@style/AppTheme.NoActionbar"
             android:windowSoftInputMode="adjustResize"></activity>

@@ -19,13 +19,14 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/iv_userhead"
+                fresco:roundAsCircle="true"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
                 fresco:placeholderImage="@mipmap/touxiang" />
 
             <TextView
-                android:id="@+id/tv_userId"
+                android:id="@+id/tv_userName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -39,7 +40,7 @@
                 android:id="@+id/tv_louceng"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_userId"
+                android:layout_below="@id/tv_userName"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_toRightOf="@id/iv_userhead"
@@ -85,11 +86,11 @@
     这段话的思想其实就是，我们一般而言是要将二分查找的start位置定为0，但如果尽量往后的话那查找起来会更快些。所以，既然在map中没有section字符所对应item的索引，但如果能找到它前一个字母所对应索引的话，我们就不必从头开始找了，直接从它上一个字母所对应的item位置往后找即可。"
                 android:textColor="@color/textcolor"
                 android:textSize="15sp"></TextView>
-            <!--<ListView-->
-                <!--android:id="@+id/ImageList"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:paddingBottom="5dp"></ListView>-->
+            <ListView
+                android:id="@+id/ImageList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"></ListView>
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

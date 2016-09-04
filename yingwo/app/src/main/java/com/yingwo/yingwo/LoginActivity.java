@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yingwo.yingwo.model.LoginEntity;
 import com.yingwo.yingwo.utils.HttpControl;
 import com.yingwo.yingwo.utils.UserinfoService;
 
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         userinfoService.login(phone, passwd).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<String>() {
+                .subscribe(new Subscriber<LoginEntity>() {
                     @Override
                     public void onCompleted() {
                         Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
@@ -90,8 +91,13 @@ public class LoginActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(String s) {
-                        Log.i("register", s);
+                    public void onNext(LoginEntity loginEntity) {
+                        int status = loginEntity.getStatus();
+                        if (status != 1){
+                            onError(new Exception());
+                        }else {
+                            onCompleted();
+                        }
                     }
                 });
     }

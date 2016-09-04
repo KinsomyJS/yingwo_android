@@ -2,6 +2,9 @@ package com.yingwo.yingwo.utils;
 
 
 import com.yingwo.yingwo.model.AcademyListModel;
+import com.yingwo.yingwo.model.LoginEntity;
+import com.yingwo.yingwo.model.PostListEntity;
+import com.yingwo.yingwo.model.RegisterEntity;
 import com.yingwo.yingwo.model.SchoolListModel;
 
 import retrofit2.Call;
@@ -24,29 +27,30 @@ public interface UserinfoService {
     @FormUrlEncoded
     @Headers("X-Requested-With:XMLHttpRequest")
     @POST("Sms/Send")
-    Call<String> requestVerify(@Field("mobile") String mobile);
+    Observable<RegisterEntity> smsSend(@Field("mobile") String mobile);
 
     //注册 请求短信验证码接口
     @GET("getRegisterSMS")
     Call<String> requestVerify1(@Query("mobile") String mobile);
 
     //注册 验证短信接口
+    @FormUrlEncoded
     @Headers("X-Requested-With:XMLHttpRequest")
     @POST("Sms/Check")
-    Call<String> verifySms(@Query("mode") String mode,@Query("mobile") String mobile,@Query("code") String code);
+    Observable<RegisterEntity> verifySms(@Field("mode") String mode,@Field("mobile") String mobile,@Field("code") String code);
 
     //注册接口    @Headers("X-Requested-With:XMLHttpRequest")
 
     @Headers("X-Requested-With:XMLHttpRequest")
     @FormUrlEncoded
     @POST("User/Register")
-    Observable<String> register(@Field("password") String password,@Field("mobile") String mobile);
+    Observable<RegisterEntity> register(@Field("password") String password, @Field("mobile") String mobile);
 
     //登录接口
     @FormUrlEncoded
     @Headers("X-Requested-With:XMLHttpRequest")
     @POST("User/Login")
-    Observable<String> login(@Field("mobile") String mobile,@Field("password") String password);
+    Observable<LoginEntity> login(@Field("mobile") String mobile, @Field("password") String password);
 
     //获取学校列表
     @Headers("X-Requested-With:XMLHttpRequest")
@@ -68,6 +72,17 @@ public interface UserinfoService {
     @FormUrlEncoded
     @Headers("X-Requested-With:XMLHttpRequest")
     @POST("User/Base_info")
-    Observable<String> updateBaseInfo(@Field("name") String name,@Field("grade")String grade,@Field("signature")String signature,@Field("sex")int sex,@Field("face_img")String img_url,@Field("school_id")String school_id,@Field("academy_id")String academy_id);
+    Observable<RegisterEntity> updateBaseInfo(@Field("name") String name,@Field("grade")String grade,@Field("signature")String signature,@Field("sex")int sex,@Field("face_img")String img_url,@Field("school_id")String school_id,@Field("academy_id")String academy_id);
 
+    //获取帖子回复
+    @FormUrlEncoded
+    @Headers("X-Requested-With:XMLHttpRequest")
+    @POST("Post/reply_list")
+    Observable<PostListEntity> getPostList(@Field("post_id") int post_id);
+
+    //获取帖子回复
+    @FormUrlEncoded
+    @Headers("X-Requested-With:XMLHttpRequest")
+    @POST("Post/reply")
+    Observable<String> build_reply(@Field("post_id") int post_id,@Field("img")String img,@Field("content")String content);
 }
