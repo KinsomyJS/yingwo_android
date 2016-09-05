@@ -27,6 +27,7 @@ public class ResetPasswdActivity1 extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resetpasswd1);
+        AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

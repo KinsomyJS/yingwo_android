@@ -2,6 +2,8 @@ package com.yingwo.yingwo;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Environment;
 
@@ -13,7 +15,6 @@ import com.qiniu.android.storage.Configuration;
 import com.qiniu.android.storage.UploadManager;
 import com.yingwo.yingwo.Listener.UILPauseOnScrollListener;
 import com.yingwo.yingwo.loader.UILImageLoader;
-import com.yingwo.yingwo.model.LoginEntity;
 
 import java.io.File;
 
@@ -31,6 +32,8 @@ public class MyApplication extends Application{
     FunctionConfig functionConfig;
     CoreConfig coreConfig;
     ThemeConfig theme;
+    public static SharedPreferences sharedPreferences;
+    public static SharedPreferences.Editor editor;
 
     @Override
     public void onCreate() {
@@ -83,6 +86,14 @@ public class MyApplication extends Application{
 // 重用uploadManager。一般地，只需要创建一个uploadManager对象
         UploadManager uploadManager = new UploadManager(config);
 
+    }
+
+    public static void restartApp(){
+        AppManager.getAppManager().AppExit(getGlobalContext());
+        Intent i = getGlobalContext().getPackageManager()
+                .getLaunchIntentForPackage(getGlobalContext().getPackageName());
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        getGlobalContext().startActivity(i);
     }
 
     public static  Context getGlobalContext(){

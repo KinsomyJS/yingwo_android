@@ -31,6 +31,7 @@ public class RegisterActivity1 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register1);
+        AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
 
     }

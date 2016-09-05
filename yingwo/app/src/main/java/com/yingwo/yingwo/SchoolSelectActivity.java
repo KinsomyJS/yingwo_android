@@ -44,6 +44,7 @@ public class SchoolSelectActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_school_select);
+        AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
         schoolSearch.setHint("输入学校名字");
         getSchoolList();

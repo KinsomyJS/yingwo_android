@@ -13,5 +13,6 @@ public class SignatureActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
         super.onCreate(savedInstanceState, persistentState);
         setContentView(R.layout.activity_refreshthing);
+        AppManager.getAppManager().addActivity(this);
     }
 }

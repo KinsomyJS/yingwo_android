@@ -82,12 +82,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"
+                android:visibility="gone"
                 android:text="我们知道section指的是索引条上选中字母的索引，我们假设这个字母是N；那secion-1就代表的是section所对应的字母在索引条上的前一个字母，如果section对应的是N的话，那section-1所对应的就是字母M;
     这段话的思想其实就是，我们一般而言是要将二分查找的start位置定为0，但如果尽量往后的话那查找起来会更快些。所以，既然在map中没有section字符所对应item的索引，但如果能找到它前一个字母所对应索引的话，我们就不必从头开始找了，直接从它上一个字母所对应的item位置往后找即可。"
                 android:textColor="@color/textcolor"
                 android:textSize="15sp"></TextView>
             <ListView
                 android:id="@+id/ImageList"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp"></ListView>
@@ -100,29 +102,46 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:orientation="horizontal">
-                    <ImageButton
+                    <LinearLayout
+                        android:id="@+id/layout_like"
+                        android:orientation="horizontal"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="5dp"
-                        android:background="@mipmap/heart_red" />
-                    <TextView
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/heart_red" />
+                        <TextView
+                            android:id="@+id/tv_likenum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="29"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@color/textcolor2"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/layout_comment"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="10dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="35"
-                        android:textSize="20sp"
-                        android:layout_marginRight="10dp"
-                        android:textColor="@color/textcolor3"/>
-                    <ImageButton
-                        android:layout_marginRight="5dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@mipmap/bub_gray" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="19"
-                        android:textSize="20sp"
-                        android:textColor="@color/textcolor3"/>
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/post_reply"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@mipmap/bub_gray" />
+                        <TextView
+                            android:id="@+id/tv_commentnum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="18"
+                            android:layout_marginLeft="5dp"
+                            android:textColor="@color/textcolor2"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>

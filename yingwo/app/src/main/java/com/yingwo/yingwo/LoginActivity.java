@@ -1,4 +1,5 @@
 package com.yingwo.yingwo;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -25,7 +26,7 @@ import rx.schedulers.Schedulers;
  * Created by FJS0420 on 2016/7/13.
  */
 
-    public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_register)
     TextView tv_register;
@@ -38,10 +39,13 @@ import rx.schedulers.Schedulers;
     @BindView(R.id.btn_login)
     Button btn_login;
 
+    private boolean loginFlag;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
         init();
 
@@ -49,6 +53,14 @@ import rx.schedulers.Schedulers;
 
 
     public void init() {
+        loginFlag = false;
+        MyApplication.sharedPreferences = getSharedPreferences("login", MODE_PRIVATE);
+        MyApplication.editor = MyApplication.sharedPreferences.edit();
+        String user_name = MyApplication.sharedPreferences.getString("user_name", "");
+        if (!user_name.equals("")) {
+            startActivity(new Intent(this, HomePageActivity.class));
+            finish();
+        }
         Intent intent = this.getIntent();
         String phone = intent.getStringExtra("phone");
         edit_phone.setText(phone);
@@ -65,10 +77,12 @@ import rx.schedulers.Schedulers;
             }
         });
     }
+
     @OnClick(R.id.btn_login)
     public void login() {
-        String phone = edit_phone.getText().toString();
-        String passwd = edit_passwd.getText().toString();
+        final String phone = edit_phone.getText().toString();
+        final String passwd = edit_passwd.getText().toString();
+
         UserinfoService userinfoService = HttpControl.getInstance().getRetrofit().create(UserinfoService.class);
         userinfoService.login(phone, passwd)
                 .subscribeOn(Schedulers.io())
@@ -77,7 +91,16 @@ import rx.schedulers.Schedulers;
                 .subscribe(new Subscriber<LoginEntity>() {
                     @Override
                     public void onCompleted() {
-                        Log.d("RegisterActivity2", "Completed");
+                        if (loginFlag) {
+                            MyApplication.editor.putString("user_name", phone);
+                            MyApplication.editor.commit();
+                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
+                            finish();
+                            loginFlag = false;
+                        } else {
+                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
@@ -88,10 +111,7 @@ import rx.schedulers.Schedulers;
                     @Override
                     public void onNext(LoginEntity loginEntity) {
                         if (loginEntity.getStatus() == 1) {
-                            Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(LoginActivity.this, HomePageActivity.class));
-                        } else {
-                            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                            loginFlag = true;
                         }
                     }
                 });

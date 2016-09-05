@@ -145,7 +145,7 @@
             android:id="@+id/btn_done_reg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@mipmap/next"
+            android:background="@drawable/button_greencorner_selector"
             android:text="完成"
             android:layout_marginTop="20dp"
             android:textSize="18sp"

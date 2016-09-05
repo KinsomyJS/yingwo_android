@@ -105,6 +105,7 @@ public class MakeupinfoActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_makeupinfo);
+        AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
         init();
         initData(savedInstanceState);
@@ -137,11 +138,7 @@ public class MakeupinfoActivity extends AppCompatActivity {
         String name = editName.getText().toString();
         userInfo.setName(name);
         userInfo.setSignature(signature);
-//        Retrofit retrofit = HttpControl.getInstance().getRetrofit();
-//        UserinfoService api = retrofit.create(UserinfoService.class);
         updateBaseInfo();
-//        Toast.makeText(this, userInfo.toString(), Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, userInfo.toString(), Toast.LENGTH_SHORT).show();
     }
 
     private void initData(Bundle savedInstanceState) {
@@ -408,9 +405,9 @@ public class MakeupinfoActivity extends AppCompatActivity {
                     .subscribe(new Subscriber<RegisterEntity>() {
                         @Override
                         public void onCompleted() {
-                            Toast.makeText(MakeupinfoActivity.this, "信息更新成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MakeupinfoActivity.this, "信息更新成功,请重新登录", Toast.LENGTH_SHORT).show();
                             updateBaseInfoProgress.setVisibility(View.GONE);
-                            startActivity(new Intent(MakeupinfoActivity.this,HomePageActivity.class));
+                            MyApplication.restartApp();
                         }
 
                         @Override
@@ -423,8 +420,6 @@ public class MakeupinfoActivity extends AppCompatActivity {
                         public void onNext(RegisterEntity registerEntity) {
                             if (registerEntity.getStatus() != 1) {
                                 onError(new Exception());
-                            } else {
-                                onCompleted();
                             }
                         }
                     });

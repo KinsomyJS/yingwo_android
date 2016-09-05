@@ -23,26 +23,26 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".RegisterActivity2"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".RegisterActivity1"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".ResetPasswdActivity1"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".ResetPasswdActivity2"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".MakeupinfoActivity"
-            android:theme="@style/AppTheme.NoActionbar">
+            android:theme="@style/Theme">
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
 
         <activity
             android:name=".PersonCenterActivity"
@@ -52,31 +52,36 @@
             android:theme="@style/Theme"></activity>
         <activity
             android:name=".RefreshThingActivity"
-            android:theme="@style/AppTheme.NoActionbar"
+            android:theme="@style/Theme"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".PostBuildingActivity"
-            android:theme="@style/AppTheme.NoActionbar"
+            android:theme="@style/Theme"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".PostActivity"
-            android:theme="@style/AppTheme.NoActionbar"
+            android:theme="@style/Theme"
             android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".FirstActivity"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".SchoolSelectActivity"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity android:name=".AcademySelectActivity"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity
             android:name=".SecondActivity"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
         <activity android:name=".clip.ClipHeaderActivity"
             android:screenOrientation="portrait"></activity>
         <activity android:name=".SignatureActivity"
-            android:theme="@style/AppTheme.NoActionbar"></activity>
+            android:theme="@style/Theme"></activity>
+        <activity android:name=".View.ImageShower"
+            android:theme="@style/Theme"></activity>
+        <activity android:name=".PhotoPreviewActivity"
+            android:theme="@style/Theme"></activity>
+
 
     </application>
 

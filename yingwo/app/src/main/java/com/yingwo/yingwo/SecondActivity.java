@@ -18,6 +18,7 @@ public class SecondActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.second);
+        AppManager.getAppManager().addActivity(this);
         btn_FirstEvent = (Button) findViewById(R.id.btn_first_event);
 
         btn_FirstEvent.setOnClickListener(new View.OnClickListener() {

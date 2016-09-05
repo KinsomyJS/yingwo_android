@@ -60,6 +60,7 @@ public class RegisterActivity2 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register2);
+        AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
         Intent intent = this.getIntent();
         sendFlag = false;
@@ -107,9 +108,9 @@ public class RegisterActivity2 extends AppCompatActivity {
                 .subscribe(new Subscriber<RegisterEntity>() {
                     @Override
                     public void onCompleted() {
-                        if (loginFlag){
+                        if (sendFlag){
                             Log.d("RegisterActivity2", "发送短信成功");
-                            loginFlag = false;
+                            sendFlag = false;
                         }else {
                             Log.d("RegisterActivity2", "发送短信失败");
                         }
@@ -123,7 +124,7 @@ public class RegisterActivity2 extends AppCompatActivity {
                     @Override
                     public void onNext(RegisterEntity registerEntity) {
                         if(registerEntity.getStatus()==1){
-                            loginFlag = true;
+                            sendFlag = true;
                         }
                     }
                 });
@@ -206,6 +207,8 @@ public class RegisterActivity2 extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         if (loginFlag){
+                            MyApplication.editor.remove("user_name");
+                            MyApplication.editor.commit();
                             Toast.makeText(RegisterActivity2.this, "登录成功", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(RegisterActivity2.this, MakeupinfoActivity.class));
                             loginFlag = false;

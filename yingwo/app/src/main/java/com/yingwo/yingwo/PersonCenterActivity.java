@@ -35,6 +35,7 @@ public class PersonCenterActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personcenter);
+        AppManager.getAppManager().addActivity(this);
         init();
 
     }

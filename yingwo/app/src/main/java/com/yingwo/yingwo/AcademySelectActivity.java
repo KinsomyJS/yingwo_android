@@ -51,6 +51,7 @@ public class AcademySelectActivity extends AppCompatActivity {
         school_id = SchoolIdIntent.getStringExtra("school_id");
         school_name = SchoolIdIntent.getStringExtra("school_name");
         setContentView(R.layout.activity_school_select);
+        AppManager.getAppManager().addActivity(this);
         ButterKnife.bind(this);
         schoolSearch.setHint("输入学院名字");
         getAcademyList();

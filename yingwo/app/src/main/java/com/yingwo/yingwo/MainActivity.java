@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+		AppManager.getAppManager().addActivity(this);
 		FLog.setMinimumLoggingLevel(FLog.WARN);// 日志打印等级
 		ConfigConstants.init(getResources());// 初始化默认图片（占位图，错误图）
 		Fresco.initialize(this, ConfigConstants.getImagePipelineConfig(this));// 图片缓存初始化配置

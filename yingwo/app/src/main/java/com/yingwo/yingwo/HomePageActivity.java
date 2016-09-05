@@ -85,6 +85,7 @@ public class HomePageActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+        AppManager.getAppManager().addActivity(this);
         action_home.setBackgroundResource(R.mipmap.home_g);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

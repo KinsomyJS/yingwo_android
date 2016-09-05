@@ -91,6 +91,7 @@ public class RefreshThingActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_refreshthing);
+        AppManager.getAppManager().addActivity(this);
         init();
 
     }
@@ -109,7 +110,7 @@ public class RefreshThingActivity extends AppCompatActivity{
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        tv_title.setText("帖子回复");
+        tv_title.setText("新鲜事");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,10 +155,12 @@ public class RefreshThingActivity extends AppCompatActivity{
             if (resultList != null) {
                 mPhotoList.addAll(resultList);
                 Log.i("resultonHanlderSuccess", " " + mPhotoList.size());
-                if (mPhotoList.size() > MAX) {
-                    for (int i = 0; i <= (mPhotoList.size() - MAX); i++)
+//                if (mPhotoList.size() > MAX) {
+//                    for (int i = 0; i <= (mPhotoList.size() - MAX); i++)
+//                        mPhotoList.remove(0);
+                    while(mPhotoList.size() > MAX)
                         mPhotoList.remove(0);
-                }
+//                }
                 photoEditListAdapter.notifyDataSetChanged();
                 Log.i("resultonHanlderSuccess", mPhotoList.size() + "");
             }

@@ -54,6 +54,7 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/iv_userhead"
+                fresco:roundAsCircle="true"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="10dp"
@@ -120,6 +121,7 @@
             android:paddingTop="5dp">
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,75 +131,11 @@
                 android:textColor="@color/textcolor"
                 android:textSize="15sp"></TextView>
             <ListView
+                android:visibility="gone"
             android:id="@+id/ImageList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="5dp"></ListView>
         </LinearLayout>
-
-        <!--<com.facebook.drawee.view.SimpleDraweeView-->
-            <!--android:id="@+id/iv_postPic"-->
-            <!--android:layout_width="660dp"-->
-            <!--android:layout_height="200dp"-->
-            <!--fresco:placeholderImage="@mipmap/picture_green"-->
-            <!--android:layout_below="@id/tv_content"-->
-            <!--android:layout_marginTop="2dp"/>-->
-
-
-        <!--                <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_below="@id/iv_postPic"
-                            android:background="@mipmap/pinglunkuang_1"
-                            android:gravity="center_vertical">
-                            <TextView
-                                android:id="@+id/tv1"
-                                android:textColor="@color/textcolor3"
-                                android:textSize="12sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="已有"/>
-                            <TextView
-                                android:id="@+id/tv_replynum"
-                                android:textColor="@color/textcolor3"
-                                android:layout_toRightOf="@id/tv1"
-                                android:textSize="12sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="18"/>
-                            <TextView
-                                android:id="@+id/tv2"
-                                android:textColor="@color/textcolor3"
-                                android:textSize="12sp"
-                                android:layout_toRightOf="@id/tv_replynum"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="个回帖  "/>
-                            <TextView
-                                android:id="@+id/tv_likenum"
-                                android:layout_toRightOf="@id/tv2"
-                                android:textColor="@color/textcolor3"
-                                android:textSize="12sp"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="12"/>
-                            <TextView
-                                android:id="@+id/tv3"
-                                android:textColor="@color/textcolor3"
-                                android:textSize="12sp"
-                                android:layout_toRightOf="@id/tv_likenum"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="个赞"/>
-
-                            <ImageView
-                                android:id="@+id/iv_like"
-                                android:layout_alignParentEnd="true"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:background="@mipmap/heart_gray"
-                                />
-                        </RelativeLayout>-->
     </RelativeLayout>
 </LinearLayout>

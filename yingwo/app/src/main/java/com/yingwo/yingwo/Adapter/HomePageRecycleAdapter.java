@@ -1,6 +1,7 @@
 package com.yingwo.yingwo.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,10 +12,12 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.w4lle.library.NineGridlayout;
+import com.yingwo.yingwo.PhotoPreviewActivity;
 import com.yingwo.yingwo.R;
 import com.yingwo.yingwo.model.TopicModel;
 import com.yingwo.yingwo.utils.TImeUtiil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +26,6 @@ import java.util.List;
  */
 
 public class HomePageRecycleAdapter extends RecyclerView.Adapter<HomePageRecycleAdapter.MyViewHolder> implements View.OnClickListener{
-
 
     private OnRecyclerViewItemClickListener mOnItemClickListener = null;
     private List<TopicModel.InfoBean> topicModelList;
@@ -50,10 +52,12 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter<HomePageRecycle
         TopicModel.InfoBean topicModel = topicModelList.get(position);
         holder.itemView.setOnClickListener(this);
         if (topicModel.getImg().contains("http")) {
-            String[] urls = topicModel.getImg().split(",");
+            final String[] urls = topicModel.getImg().split(",");
             List<String> imgurls = new ArrayList<>();
+            final List<String> bigimgurls = new ArrayList<>();
             for (String str : urls) {
                 imgurls.add(str + "?imageMogr2/thumbnail/!75p");
+                bigimgurls.add(str);
             }
             holder.gridView.setVisibility(View.VISIBLE);
             GridviewAdapter adapter = new GridviewAdapter(context, imgurls);
@@ -62,13 +66,24 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter<HomePageRecycle
                 @Override
                 public void onItemClick(View view, int position) {
                     Toast.makeText(context,"第" + position + "张",Toast.LENGTH_SHORT).show();
+                    /*Intent intent = new Intent();
+                    intent.setClass(context,ImageShower.class);
+                    intent.putExtra("imgurl",urls[position]);*/
+                    Intent intent = new Intent();
+                    intent.setClass(context,PhotoPreviewActivity.class);
+                    intent.putExtra("photo_list", (Serializable) bigimgurls);
+                    context.startActivity(intent);
                 }
             });
-        }
+        }else if (!topicModel.getImg().contains("http"))
+            holder.gridView.setVisibility(View.GONE);
+
         if (!topicModel.getContent().isEmpty()){
             holder.tv_content.setVisibility(View.VISIBLE);
             holder.tv_content.setText(topicModel.getContent());
-        }
+        }else if(topicModel.getContent().isEmpty())
+            holder.tv_content.setVisibility(View.GONE);
+
         String userheadurl = topicModel.getUser_face_img();
         if (userheadurl!=null) {
             Uri imgUri = Uri.parse(userheadurl);
@@ -138,5 +153,9 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter<HomePageRecycle
 
     public void setData(List<TopicModel.InfoBean> data){
         topicModelList = data;
+    }
+
+    private void showBigpic(Context context,String url){
+
     }
 }
