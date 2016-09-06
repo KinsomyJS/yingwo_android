@@ -35,7 +35,19 @@
                 android:text="kinsomy"
                 android:textColor="@color/textcolor1"
                 android:textSize="14sp" />
-
+            <TextView
+                android:visibility="gone"
+                android:id="@+id/tv_louzhu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_userName"
+                android:background="@mipmap/louzhubiaoqian"
+                android:layout_marginLeft="8dp"
+                android:textSize="14sp"
+                android:gravity="center"
+                android:layout_marginTop="9dp"
+                android:textColor="@color/white"
+                android:text="楼主"/>
             <TextView
                 android:id="@+id/tv_louceng"
                 android:layout_width="wrap_content"

@@ -15,6 +15,7 @@ import com.w4lle.library.NineGridlayout;
 import com.yingwo.yingwo.PhotoPreviewActivity;
 import com.yingwo.yingwo.R;
 import com.yingwo.yingwo.model.TopicModel;
+import com.yingwo.yingwo.utils.ImageUtil;
 import com.yingwo.yingwo.utils.TImeUtiil;
 
 import java.io.Serializable;
@@ -88,6 +89,9 @@ public class HomePageRecycleAdapter extends RecyclerView.Adapter<HomePageRecycle
         if (userheadurl!=null) {
             Uri imgUri = Uri.parse(userheadurl);
             holder.iv_userhead.setImageURI(imgUri);
+        }else {
+            holder.iv_userhead.setImageURI(ImageUtil.resourceIdToUri(context, R.mipmap.touxiang));
+
         }
 //        if (imgurls.size()>5){
 //            holder.gridView.setNumColumns(colnum);

@@ -12,7 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -104,6 +106,7 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
                 finish();
             }
         });
+        tvInput.setOnEditorActionListener(new replyKeyListener());
         imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         //注册软键盘的监听
         SoftKeyBoardListener.setListener(this,
@@ -214,17 +217,35 @@ public class PostActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
+    public class replyKeyListener implements TextView.OnEditorActionListener {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            if (actionId == EditorInfo.IME_ACTION_SEND) {
+                InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                if (imm.isActive()) {
+                    Toast.makeText(PostActivity.this, "haole", Toast.LENGTH_SHORT).show();
+                    Log.d("PostRecyclerAdapter", "好了");
+                    imm.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                    finish();
+                }
+            }
+            return false;
+        }
+    }
+
     public class popUpClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {
-            if (imm.isActive()){
+            if (imm.isActive()) {
                 block_keyboardview.setVisibility(View.GONE);
                 imm.hideSoftInputFromWindow(tvInput.getWindowToken(), 0);
             }
             command_popUp = new Command_PopUp(PostActivity.this, Pop_onClick);
             command_popUp.showAtLocation(findViewById(R.id.post_main), Gravity.BOTTOM, 0, 0);
         }
+
     }
 
     public View.OnClickListener Pop_onClick = new View.OnClickListener() {

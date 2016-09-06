@@ -425,7 +425,6 @@ public class MakeupinfoActivity extends AppCompatActivity {
                     });
         } else {
             updateBaseInfoProgress.setVisibility(View.GONE);
-            Toast.makeText(this, "请完善个人信息", Toast.LENGTH_SHORT).show();
         }
     }
 

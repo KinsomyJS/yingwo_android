@@ -1,5 +1,9 @@
 package com.yingwo.yingwo.model;
 
+import android.widget.Toast;
+
+import com.yingwo.yingwo.MyApplication;
+
 /**
  * Created by wangyu on 9/2/16.
  */
@@ -82,14 +86,25 @@ public class UserInfoEntity {
     }
 
     public boolean rightFlag() {
-        if (name.equals("") || grade.equals("") || signature.equals("") || school_id.equals(""))
+
+        if (name.equals("") || grade.equals("") || signature.equals("") || school_id.equals("")) {
+            if (name.equals(""))
+                Toast.makeText(MyApplication.getGlobalContext(), "请填写昵称", Toast.LENGTH_SHORT).show();
+            else if (grade.equals(""))
+                Toast.makeText(MyApplication.getGlobalContext(), "请填写所在年级", Toast.LENGTH_SHORT).show();
+            else if (signature.equals(""))
+                Toast.makeText(MyApplication.getGlobalContext(), "请填写个性签名", Toast.LENGTH_SHORT).show();
+            else if (school_id.equals(""))
+                Toast.makeText(MyApplication.getGlobalContext(), "请填写所在学校", Toast.LENGTH_SHORT).show();
             return false;
-        return true;
+        } else {
+            return true;
+        }
     }
 
     @Override
     public String toString() {
-        String content = "用户名:"+name+" 年级:"+grade+" 签名:"+signature+" 性别:"+sex+" 头像:"+face_img+" 学校id:"+school_id+" 专业id:"+academy_id;
+        String content = "用户名:" + name + " 年级:" + grade + " 签名:" + signature + " 性别:" + sex + " 头像:" + face_img + " 学校id:" + school_id + " 专业id:" + academy_id;
         return content;
     }
 }

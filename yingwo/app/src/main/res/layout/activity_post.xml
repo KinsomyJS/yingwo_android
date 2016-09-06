@@ -79,10 +79,9 @@
         android:background="@color/white"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingBottom="9dp"
+        android:paddingBottom="5dp"
         android:paddingLeft="20dp"
-        android:paddingTop="9dp"
-        android:visibility="gone">
+        android:paddingTop="5dp">
 
         <ImageView
             android:id="@+id/btn_emoj"
@@ -92,11 +91,16 @@
 
 
         <EditText
+            android:imeOptions="actionSend"
+            android:inputType="text"
             android:id="@+id/tv_input"
+            android:background="@drawable/post_reply_bg"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_marginRight="20dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="3dp"/>
 
     </LinearLayout>
 

@@ -11,10 +11,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.yingwo.yingwo.PopUpWindow.Command_PopUp;
 import com.yingwo.yingwo.R;
 import com.yingwo.yingwo.model.PostListEntity.InfoBean;
 import com.yingwo.yingwo.model.TopicModel;
+import com.yingwo.yingwo.utils.ImageUtil;
 import com.yingwo.yingwo.utils.ListViewUtil;
 import com.yingwo.yingwo.utils.TImeUtiil;
 
@@ -30,7 +30,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Activity context;
     private List<InfoBean> postData;
     private TopicModel.InfoBean topBean;
-    private Command_PopUp command_popUp;
     private PostImageItemAdapter postImageItemAdapter;
     private View.OnClickListener mOnClickListener = null;
     private View.OnClickListener popUpClickListener = null;
@@ -74,31 +73,52 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (holder instanceof ItemViewHolder) {
             setReply(((ItemViewHolder) holder).iv_reply);
             InfoBean infoBean = postData.get(position - 1);
+            if (infoBean.getUser_name().equals(topBean.getUser_name())){
+                ((ItemViewHolder) holder).louzhu_icon.setVisibility(View.VISIBLE);
+            }else {
+                ((ItemViewHolder) holder).louzhu_icon.setVisibility(View.GONE);
+            }
             img_urls = infoBean.getImg();
             user_name = (String) infoBean.getUser_name();
             releaseTime = infoBean.getCreate_time();
             content = infoBean.getContent();
             face_img = (String) infoBean.getUser_face_img();
         }
-        if (!content.isEmpty()) {
+
+        if (!content.isEmpty())
+
+        {
             myHolder.tvContent.setVisibility(View.VISIBLE);
             myHolder.tvContent.setText(content);
-        } else {
+        } else
+
+        {
             myHolder.tvContent.setVisibility(View.GONE);
         }
-        if (face_img.contains("http")) {
-            myHolder.face_img.setVisibility(View.VISIBLE);
+
+        if (face_img != null)
+
+        {
             myHolder.face_img.setImageURI(face_img);
-        } else {
-            myHolder.face_img.setVisibility(View.GONE);
+        } else
+
+        {
+            myHolder.face_img.setImageURI(ImageUtil.resourceIdToUri(context, R.mipmap.touxiang));
         }
-        if (img_urls.contains("http")) {
+
+        if (img_urls.contains("http"))
+
+        {
             myHolder.listView.setVisibility(View.VISIBLE);
             setImage(myHolder.listView, img_urls);
-        } else {
+        } else
+
+        {
             myHolder.listView.setVisibility(View.GONE);
         }
+
         myHolder.tvLouCeng.setText("第" + (position + 1) + "楼");
+
         setPopup(myHolder.ibMore);
 //        myHolder.ibMore.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -137,9 +157,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         SimpleDraweeView face_img;
         TextView time;
         ListView listView;
+        TextView louzhu_icon;
 
         public MyViewHolder(View itemView) {
             super(itemView);
+            louzhu_icon = (TextView) itemView.findViewById(R.id.tv_louzhu);
             time = (TextView) itemView.findViewById(R.id.tv_releasetime);
             face_img = (SimpleDraweeView) itemView.findViewById(R.id.iv_userhead);
             userName = (TextView) itemView.findViewById(R.id.tv_userName);
@@ -164,24 +186,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         public TopViewHolder(View itemView) {
             super(itemView);
         }
-    }
 
-//    public View.OnClickListener Pop_onClick = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            switch (v.getId()) {
-//                case R.id.action_btn:
-//                    Toast.makeText(context, "这是操作按钮", Toast.LENGTH_SHORT).show();
-//                    break;
-//                case R.id.copy_btn:
-//                    Toast.makeText(context, "这是复制按钮", Toast.LENGTH_SHORT).show();
-//                    break;
-//                case R.id.report_btn:
-//                    Toast.makeText(context, "这是举报按钮", Toast.LENGTH_SHORT).show();
-//                    break;
-//            }
-//        }
-//    };
+    }
 
     public void setImage(ListView listView, String imageUrl) {
         if (!imageUrl.contains("http")) {
@@ -219,7 +225,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mOnClickListener = onClickListener;
     }
 
-    public void setPopUpClickListener(View.OnClickListener onClickListener){
+    public void setPopUpClickListener(View.OnClickListener onClickListener) {
         popUpClickListener = onClickListener;
     }
 }
